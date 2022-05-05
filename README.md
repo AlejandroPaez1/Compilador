@@ -27,6 +27,6 @@ se guarda en un arreglo despues de un ":" para luego ser analizados por el metod
             }
    ```
 
-##pantalla principal tiene una pestaña de seccion de ayuda en la parte de abajo
+## pantalla principal tiene una pestaña de seccion de ayuda en la parte de abajo
 ![por_si_acaso](pantallaprin.png)
 
