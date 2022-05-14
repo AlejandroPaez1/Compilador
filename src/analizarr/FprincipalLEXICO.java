@@ -148,7 +148,6 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
         txt_salida.setSelectionColor(new java.awt.Color(204, 204, 204));
         jScrollPane1.setViewportView(txt_salida);
 
-        txt_errores.setEditable(false);
         txt_errores.setBackground(new java.awt.Color(232, 232, 232));
         txt_errores.setColumns(20);
         txt_errores.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
@@ -407,28 +406,46 @@ String Dletraletra = "([a-z]*[0-9]* [\\+|\\-|\\*|\\/] [a-z]*[0-9]*)*";
 String operacionE = "[\\s]*entero [a-z]*[0-9]* = ("+numletra+"|"+numnum+"|"+letranum+"|"+letraletra+")";
 String operacionDe = "[\\s]*decimal [a-z]*[0-9]* = ("+Dnumletra+"|"+Dnumnum+"|"+Dletranum+"|"+Dletraletra+")";
 
+String datos_guardados = "";
+String dato_entero = "";
+String dato_decimal = "";
+
+String palabra_reservada = "entero|presentar|decimal|texto|mientras|si";
+
+
 if (Arreglo[0].contains("inicio codigo RHA;")) {
      for (int i = 1; i < n; i++) {
+         
                System.out.println("el dato num: " + i + " es:: " + Arreglo[i].replaceAll("\n", ""));
 
 // DECLARACION ENTERO y Operaciones
           if(Arreglo[i].contains("entero ")){
-                  if(Arreglo[i].matches("([\\s]*entero [a-zA-Z]*[0-9]* = ([a-z|0-9]*))|("+operacionE+")")){
-                    txt_salida.append("declaracion correcta del entero perfect \n");
+                  if(Arreglo[i].matches("([\\s]*entero [a-zA-Z]*[0-9]* = ([a-zA-Z]*[0-9]*))|("+operacionE+")")){
+                    if(Arreglo[i].matches("([\\s]*entero ("+palabra_reservada+") = ([a-zA-Z]*[0-9]*))|("+operacionE+")")){
+                        System.out.println("error por que es una palabra reservada \n");
+                        txt_errores.append("es una palabra reservada:  "+Arreglo[i].replaceAll("\n","")+"\n");
+
+                    }else{
+                     txt_salida.append("declaracion correcta del entero perfect \n");
+                    dato_entero +=(Arreglo[i].replaceAll("\\s*"+"entero ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|("+operacionE+")","")+"|");
                     enterobien = true;
+                    }  
+                   
                     }else {
-                        txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                        txt_errores.append("no has declarado bien el valor ent:  "+Arreglo[i].replaceAll("\n","")+"\n");
                          enterobien = false;
                     }
             }
   
 // declaracion decimal y la operacion decimal                                                                       
               if(Arreglo[i].contains("decimal ")){
-                    if(Arreglo[i].matches("([\\s]*decimal [a-zA-Z]*[0-9]* = ([a-z|0-9]*|[0-9]*[.][0-9]*))|("+operacionDe+")")){
+                    if(Arreglo[i].matches("([\\s]*decimal [a-zA-Z]*[0-9]* = (([a-zA-Z]*[0-9]*)|[0-9]*[.][0-9]*))|("+operacionDe+")")){
                         txt_salida.append("declaracion correcta del decimal perfect \n");
+                        dato_decimal +=(Arreglo[i].replaceAll("\\s*"+"decimal ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|[0-9]*[.][0-9]*|("+operacionDe+")","")+"|");
+
                          decimalbien= true;
                         }else{
-                        txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                        txt_errores.append("no has declarado bien el valordec :  "+Arreglo[i].replaceAll("\n","")+"\n");
                         decimalbien = false;
                       }
                 }
@@ -439,7 +456,7 @@ if (Arreglo[0].contains("inicio codigo RHA;")) {
                                 txt_salida.append("declaracion correcta del texto perfect \n");
                                 textobien = true;
                                 }else{
-                                txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                txt_errores.append("no has declarado bien el valor txt:  "+Arreglo[i].replaceAll("\n","")+"\n");
                                 textobien = false;
                    }
             }
@@ -450,7 +467,7 @@ if (Arreglo[0].contains("inicio codigo RHA;")) {
                                 txt_salida.append("has mostrado bien los datos:  "+Arreglo[i].replaceAll("presentar ","").replaceAll("\n", "")+" \n");
                                 presentarbien = true;
                                 }else{
-                                 txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                 txt_errores.append("no has declarado bien el valor presentar:  "+Arreglo[i].replaceAll("\n","")+"\n");
                                  presentarbien = false;
                           }
             
@@ -553,7 +570,9 @@ falloSI = false;
        txt_errores.append("no has iniciado el codigo es 'inicio codigo RHA;:' y tienes el valor: "+Arreglo[0]);
       }
       
-      
+               System.out.println("Datos guardado entero son: "+ dato_entero);
+               System.out.println("Datos guardado decimal son: "+ dato_decimal+"\n");
+
 }//termino del void
 
 private void siiiuuu(){
