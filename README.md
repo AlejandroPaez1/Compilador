@@ -16,14 +16,23 @@ se guarda en un arreglo despues de un ":" para luego ser analizados por el metod
 
 
 ```java
-            if(Arreglo[i].contains("texto ")){
-                   if(Arreglo[i].matches("[\\s]*texto [a-zA-Z]*[0-9]* = '[a-zA-Z|0-9|\\s]*'")){
-                                txt_salida.append("declaracion correcta del texto perfect \n");
-                                textobien = true;
-                                }else{
-                                txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
-                                textobien = false;
-                   }
+// DECLARACION ENTERO y Operaciones
+          if(Arreglo[i].contains("entero ")){
+                  if(Arreglo[i].matches("([\\s]*entero [a-zA-Z]*[0-9]* = ([a-zA-Z]*[0-9]*))|("+operacionE+")")){
+                    if(Arreglo[i].matches("([\\s]*entero ("+palabra_reservada+") = ([a-zA-Z]*[0-9]*))|("+operacionE+")")){
+                        System.out.println("error por que es una palabra reservada \n");
+                        txt_errores.append("es una palabra reservada:  "+Arreglo[i].replaceAll("\n","")+"\n");
+
+                    }else{
+                     txt_salida.append("declaracion correcta del entero perfect \n");
+                    dato_entero +=(Arreglo[i].replaceAll("\\s*"+"entero ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|("+operacionE+")","")+"|");
+                    enterobien = true;
+                    }  
+                   
+                    }else {
+                        txt_errores.append("no has declarado bien el valor ent:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                         enterobien = false;
+                    }
             }
    ```
 
