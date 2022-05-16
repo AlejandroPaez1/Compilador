@@ -68,11 +68,13 @@
                           <Component id="btn_lex" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                           <Component id="bt_sintactico" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                          <Component id="btn_regresar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
-                          <Component id="btn_limpiar" min="-2" pref="142" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="bt_semantico" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btn_regresar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btn_limpiar" min="-2" pref="142" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -86,6 +88,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="bt_sintactico" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                           <Component id="btn_regresar" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
+                          <Component id="bt_semantico" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                       </Group>
                       <Component id="btn_lex" max="32767" attributes="0"/>
                       <Component id="btn_limpiar" max="32767" attributes="0"/>
@@ -236,9 +239,9 @@
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                      <Component id="jLabel1" pref="208" max="32767" attributes="0"/>
+                                      <Component id="jLabel1" pref="222" max="32767" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" pref="675" max="32767" attributes="0"/>
+                                      <Component id="jLabel2" pref="689" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jScrollPaneErrores" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -419,7 +422,7 @@
                           <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="270" max="-2" attributes="0"/>
-                              <Component id="jButton1" pref="364" max="32767" attributes="0"/>
+                              <Component id="jButton1" pref="392" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="273" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -446,12 +449,13 @@
                         <Component class="javax.swing.JTextArea" name="jTextArea1">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
-                            <Property name="columns" type="int" value="20"/>
+                            <Property name="columns" type="int" value="1"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Monospaced" size="14" style="0"/>
                             </Property>
-                            <Property name="rows" type="int" value="5"/>
-                            <Property name="text" type="java.lang.String" value="Seccion ayuda&#xa;analizador lexico y sintactico hecho por&#xa;--el codigo siempre tiene que iniciar por&#xa;&#x9;inicio codigo RHA;:&#xa;---RESPETAR ESTRICTAMENTE LOS ESPACIOS&#xa;&#xa;--para declarar variables siempre se inicia el valor sea entero, decimal, texto seguido de el nombre de la&#xa; variable&#xa;&#x9;entero  = 12:&#xa;&#xa;--al declarar se inicializa el valor en entero decimal y texto &#xa; &#x9;decimal dec = 1.4:&#xa;&#x9;texto c = &apos;hola mundo&apos;:&#xa;&#x9;entero Nvar = 12;&#xa;--Para imprimir en pantalla se usa &#xa;&#x9;presentar Nvar = &apos;hello word&apos;:&#xa;  -Si el dato esta correcto imprimira &#xa;&#x9;Nvar = &apos;hello word&apos;:&#xa;--usar el si es facil siempre y cuando detecte bien los espacios para poder diferenciar&#xa;&#x9;si ( aux = b ) {:&#xa;&#x9;si ( uff &gt; xd ) {:&#xa;&#xa;--usar el mientras hay que respetar si o si los cambios de mientras&#xa;&#x9;mientras ( aux = b ) {:&#xa;&#x9;mientras ( bb &lt; asd ) {:&#xa;&#xa;"/>
+                            <Property name="rows" type="int" value="1"/>
+                            <Property name="tabSize" type="int" value="1"/>
+                            <Property name="text" type="java.lang.String" value="Seccion ayuda&#xa;analizador lexico y sintactico hecho por&#xa;--el codigo siempre tiene que iniciar por&#xa;&#x9;inicio codigo RHA;:&#xa;---RESPETAR ESTRICTAMENTE LOS ESPACIOS&#xa;&#xa;--para declarar variables siempre se inicia el valor sea entero, decimal, texto seguido de el nombre de la&#xa; variable&#xa;&#x9;entero aux2 = 12:&#xa;&#xa;--al declarar se inicializa el valor en entero decimal y texto &#xa; &#x9;decimal dec = 1.4:&#xa;&#x9;texto txtVar = &apos;hello word&apos;:&#xa;&#x9;entero Nvar = 12;&#xa;--Para imprimir en pantalla se usa &#xa;&#x9;presentar = txtVar:&#xa;  -Si el dato esta correcto imprimira &#xa;&#x9; = &apos;hello word&apos;:&#xa;--usar el si es facil siempre y cuando detecte bien los espacios para poder diferenciar&#xa;     si ( aux2 = dec ) {:&#xa;        &#xa;     }:&#xa;&#x9;&#xa;--usar el mientras hay que respetar si o si los cambios de mientras&#xa;&#x9;mientras ( aux2 = dec ) {:&#xa;&#x9;&#xa;         }:&#xa;&#xa;"/>
                           </Properties>
                         </Component>
                       </SubComponents>
@@ -510,6 +514,38 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_lexActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="bt_semantico">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="18" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Imagenes/boton-de-play (2).png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Analizador semantico"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+                <BevelBorder bevelType="1"/>
+              </Border>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Cursor de Mano"/>
+            </Property>
+            <Property name="debugGraphicsOptions" type="int" value="-1"/>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="horizontalTextPosition" type="int" value="10"/>
+            <Property name="name" type="java.lang.String" value="" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_semanticoActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

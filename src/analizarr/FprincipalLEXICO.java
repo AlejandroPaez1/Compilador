@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 
 public class FprincipalLEXICO extends javax.swing.JFrame {
 
@@ -31,6 +34,15 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
     NumeroLinea numeroLinea;
     public String Arreglo[];
 
+String datos_guardados = "";
+String dato_entero = "";
+String dato_decimal = "";
+String dato_texto = "";
+
+String dato_operE = "";
+String dato_operDec = "";
+
+String palabra_reservada = "entero|presentar|decimal|texto|mientras|si";
 
     public FprincipalLEXICO() {
         initComponents();
@@ -81,6 +93,7 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         btn_lex = new javax.swing.JButton();
+        bt_semantico = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
@@ -187,9 +200,9 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
                         .addGap(8, 8, 8))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
                     .addComponent(jScrollPaneErrores))
                 .addGap(0, 0, 0))
         );
@@ -228,10 +241,11 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(0, 113, 233));
 
         jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
+        jTextArea1.setColumns(1);
         jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Seccion ayuda\nanalizador lexico y sintactico hecho por\n--el codigo siempre tiene que iniciar por\n\tinicio codigo RHA;:\n---RESPETAR ESTRICTAMENTE LOS ESPACIOS\n\n--para declarar variables siempre se inicia el valor sea entero, decimal, texto seguido de el nombre de la\n variable\n\tentero  = 12:\n\n--al declarar se inicializa el valor en entero decimal y texto \n \tdecimal dec = 1.4:\n\ttexto c = 'hola mundo':\n\tentero Nvar = 12;\n--Para imprimir en pantalla se usa \n\tpresentar Nvar = 'hello word':\n  -Si el dato esta correcto imprimira \n\tNvar = 'hello word':\n--usar el si es facil siempre y cuando detecte bien los espacios para poder diferenciar\n\tsi ( aux = b ) {:\n\tsi ( uff > xd ) {:\n\n--usar el mientras hay que respetar si o si los cambios de mientras\n\tmientras ( aux = b ) {:\n\tmientras ( bb < asd ) {:\n\n");
+        jTextArea1.setRows(1);
+        jTextArea1.setTabSize(1);
+        jTextArea1.setText("Seccion ayuda\nanalizador lexico y sintactico hecho por\n--el codigo siempre tiene que iniciar por\n\tinicio codigo RHA;:\n---RESPETAR ESTRICTAMENTE LOS ESPACIOS\n\n--para declarar variables siempre se inicia el valor sea entero, decimal, texto seguido de el nombre de la\n variable\n\tentero aux2 = 12:\n\n--al declarar se inicializa el valor en entero decimal y texto \n \tdecimal dec = 1.4:\n\ttexto txtVar = 'hello word':\n\tentero Nvar = 12;\n--Para imprimir en pantalla se usa \n\tpresentar = txtVar:\n  -Si el dato esta correcto imprimira \n\t = 'hello word':\n--usar el si es facil siempre y cuando detecte bien los espacios para poder diferenciar\n     si ( aux2 = dec ) {:\n        \n     }:\n\t\n--usar el mientras hay que respetar si o si los cambios de mientras\n\tmientras ( aux2 = dec ) {:\n\t\n         }:\n\n");
         jScrollPane2.setViewportView(jTextArea1);
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
@@ -253,7 +267,7 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
             .addComponent(jScrollPane2)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(270, 270, 270)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                 .addGap(273, 273, 273))
         );
         jPanel3Layout.setVerticalGroup(
@@ -296,6 +310,23 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
             }
         });
 
+        bt_semantico.setBackground(new java.awt.Color(255, 255, 255));
+        bt_semantico.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        bt_semantico.setForeground(new java.awt.Color(0, 0, 51));
+        bt_semantico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/boton-de-play (2).png"))); // NOI18N
+        bt_semantico.setText("Analizador semantico");
+        bt_semantico.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        bt_semantico.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_semantico.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        bt_semantico.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bt_semantico.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        bt_semantico.setName(""); // NOI18N
+        bt_semantico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_semanticoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -309,10 +340,12 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(bt_sintactico)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bt_semantico)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_regresar)
-                        .addGap(93, 93, 93)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,7 +354,8 @@ public class FprincipalLEXICO extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(bt_sintactico, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btn_regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btn_regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bt_semantico, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btn_lex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_limpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -406,11 +440,10 @@ String Dletraletra = "([a-z]*[0-9]* [\\+|\\-|\\*|\\/] [a-z]*[0-9]*)*";
 String operacionE = "[\\s]*entero [a-z]*[0-9]* = ("+numletra+"|"+numnum+"|"+letranum+"|"+letraletra+")";
 String operacionDe = "[\\s]*decimal [a-z]*[0-9]* = ("+Dnumletra+"|"+Dnumnum+"|"+Dletranum+"|"+Dletraletra+")";
 
-String datos_guardados = "";
-String dato_entero = "";
-String dato_decimal = "";
 
-String palabra_reservada = "entero|presentar|decimal|texto|mientras|si";
+
+
+
 
 
 if (Arreglo[0].contains("inicio codigo RHA;")) {
@@ -421,15 +454,8 @@ if (Arreglo[0].contains("inicio codigo RHA;")) {
 // DECLARACION ENTERO y Operaciones
           if(Arreglo[i].contains("entero ")){
                   if(Arreglo[i].matches("([\\s]*entero [a-zA-Z]*[0-9]* = ([a-zA-Z]*[0-9]*))|("+operacionE+")")){
-                    if(Arreglo[i].matches("([\\s]*entero ("+palabra_reservada+") = ([a-zA-Z]*[0-9]*))|("+operacionE+")")){
-                        System.out.println("error por que es una palabra reservada \n");
-                        txt_errores.append("es una palabra reservada:  "+Arreglo[i].replaceAll("\n","")+"\n");
-
-                    }else{
                      txt_salida.append("declaracion correcta del entero perfect \n");
-                    dato_entero +=(Arreglo[i].replaceAll("\\s*"+"entero ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|("+operacionE+")","")+"|");
                     enterobien = true;
-                    }  
                    
                     }else {
                         txt_errores.append("no has declarado bien el valor ent:  "+Arreglo[i].replaceAll("\n","")+"\n");
@@ -441,7 +467,6 @@ if (Arreglo[0].contains("inicio codigo RHA;")) {
               if(Arreglo[i].contains("decimal ")){
                     if(Arreglo[i].matches("([\\s]*decimal [a-zA-Z]*[0-9]* = (([a-zA-Z]*[0-9]*)|[0-9]*[.][0-9]*))|("+operacionDe+")")){
                         txt_salida.append("declaracion correcta del decimal perfect \n");
-                        dato_decimal +=(Arreglo[i].replaceAll("\\s*"+"decimal ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|[0-9]*[.][0-9]*|("+operacionDe+")","")+"|");
 
                          decimalbien= true;
                         }else{
@@ -463,7 +488,7 @@ if (Arreglo[0].contains("inicio codigo RHA;")) {
             
 // Mostrar datos en pantalla                                                                       
           if(Arreglo[i].contains("presentar ")){
-                          if(Arreglo[i].matches("[\\s]*presentar [a-zA-Z]*[0-9]* = ('[a-zA-Z|0-9|\\s]*'|[a-z]*[0-9]*)")){
+                          if(Arreglo[i].matches("[\\s]*presentar = ([a-zA-Z]*[0-9]*)")){
                                 txt_salida.append("has mostrado bien los datos:  "+Arreglo[i].replaceAll("presentar ","").replaceAll("\n", "")+" \n");
                                 presentarbien = true;
                                 }else{
@@ -472,92 +497,44 @@ if (Arreglo[0].contains("inicio codigo RHA;")) {
                           }
             
             }
-// asiganacion if                                           
        
 // asiganacion while                                           
             if(Arreglo[i].contains("mientras ")){
-                   if(Arreglo[i].matches("[\\s]*mientras \\( ([a-zA-Z])* [<|>|=] ([a-zA-Z])* \\) \\{")){
+                   if(Arreglo[i].matches("[\\s]*mientras \\( ([a-zA-Z]*[0-9]*)* [<|>|=] ([a-zA-Z]*[0-9]*)* \\) \\{")){
                        for (int j = i; j < n; j++) {
-                                       if(Arreglo[j].contains("}m")){
-                                            txt_salida.append("declaracion correcta del mientras \n");
+                                       if(Arreglo[j].contains("}")){
+                                            txt_salida.append("si esta el } mientras \n");
                                             mientrasbien = true;
                                        }else{
-                                           txt_errores.append("tamal el while mexicaon PERO SI APARECE EL 'declaracion correcta del mientras' IGNORAR ji\n");
+                                           txt_errores.append("tamal el while PERO SI APARECE EL 'si esta el } mientras' IGNORAR ji\n");
                                        }
-                                       
-                                       
                        }
-                       
-                       
                                 }else{
                                 txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
                                 mientrasbien= false;
                    }
             }
             
-//// asignacion sino                                           
-//            if(Arreglo[i].contains("}sino{")){
-//                txt_salida.append("declaracion correcta del sino cerrado\n");
-//                sinobien = true;
-//              }else{
-//                //txt_errores.append("declaracion del sino mal cerrado: "+Arreglo[i].replaceAll("\n","")+"\n");
-//             }
 
-//// ASIGNACION SINO SI                                           
-//            if(Arreglo[i].contains("}sino si (")){
-//                if(Arreglo[i].matches("[\\s]*\\}sino si \\( ([a-zA-Z])* [<|>|=] ([a-zA-Z])* \\) \\{")){
-//                            txt_salida.append("declaracion correcta del sino si si\n");
-//                    
-//                    sinobien = true;
-//                }else{
-//                   sinobien = false;
-//                    txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
-//                }
-//            }else{
-//               //txt_errores.append(" ignorar iniciaste le falta datos al SI");
-//            }
-  
 // pruba iff
-            if(Arreglo[i].contains("if ")){
-                   if(Arreglo[i].matches("[\\s]*if \\( ([a-zA-Z])* [<|>|=] ([a-zA-Z])* \\) \\{ \\s*\\}")){
-                                txt_salida.append("declaracion correcta del iifff \n");
-                                sibien = true;
-                                }else{
-                                txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
-                                sibien = false;
-                   }
-            }
-
+ // asignacion iff
+    if(Arreglo[i].contains("si ")){
+           if(Arreglo[i].matches("[\\s]*si \\( ([a-zA-Z]*[0-9]*) [<|>|=] ([a-zA-Z]*[0-9]*)* \\) \\{")){
+                 for (int j = i+1; j < n; j++) {
+                                       if(Arreglo[j].contains("}")){
+                                            txt_salida.append("esta cerrado el si \n");
+                                            mientrasbien = true;
+                                       }else{
+                                           txt_errores.append("algun error PERO SI MUESTRA 'esta cerrado el si' ignorar el error \n");
+                                       }
+                       }
+            }else{
+                txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                sibien = false;
+           }
+    }     
+    
             
-            
-/*  PRUEBA DE OPERACIONES IGNORAR
-//  Operaciones       
-String pruebafinal = "[\\s]*enti [a-z]*[0-9]* = ("+numletra+"|"+numnum+"|"+letranum+"|)";
-
-//operaciones entero
-        if(Arreglo[i].contains("ent ")){
-                          if(Arreglo[i].matches("[\\s]*ent [a-z]*[0-9]* = ("+numletra+"|"+numnum+"|"+letranum+"|"+letraletra+")")){
-                                txt_salida.append("operacion bien \n");
-                                operacionbien = true;
-                                }else{
-                                txt_errores.append("no has operado bien:  "+Arreglo[i].replaceAll("\n","")+"\n");
-                                operacionbien = false;
-                                }
-                }
-        
-// operaciones Decimal        
-    if(Arreglo[i].contains("dec ")){
-        if(Arreglo[i].contains("dec ")){
-                          if(Arreglo[i].matches("[\\s]*dec [a-z]*[0-9]* = ("+Dnumletra+"|"+Dnumnum+"|"+Dletranum+"|"+Dletraletra+")")){
-                              txt_salida.append("operacion decimal bien \n");
-                      }
-            }
-            }          
-              
-
-falloSI = false;
-
-*/
     }//termino del Arreglo[i]
                  if(enterobien==true && decimalbien==true&& textobien== true && sibien ==true && mientrasbien ==true && presentarbien==true && operacionbien == true ){
                 txt_salida.append("compilo bien ooo");
@@ -570,8 +547,6 @@ falloSI = false;
        txt_errores.append("no has iniciado el codigo es 'inicio codigo RHA;:' y tienes el valor: "+Arreglo[0]);
       }
       
-               System.out.println("Datos guardado entero son: "+ dato_entero);
-               System.out.println("Datos guardado decimal son: "+ dato_decimal+"\n");
 
 }//termino del void
 
@@ -579,7 +554,7 @@ private void siiiuuu(){
     int n = Arreglo.length;
     for (int i = 0; i < n; i++) {
              if(Arreglo[i].contains("si ")){
-                if(Arreglo[i].matches("[\\s]*si \\( ([a-zA-Z])* [<|>|=\\=] ([a-zA-Z])* \\) \\{")){
+                if(Arreglo[i].matches("[\\s]*si \\( ([a-zA-Z]*[0-9]*)* [<|>|=\\=] ([a-zA-Z]*[0-9]*)* \\) \\{")){
                     System.out.println("el numero i es "+i);
                     for (int j = i; j < n; j++) {
                         System.out.println("ADENTRO de si ( [as] < [as]\n");
@@ -648,32 +623,28 @@ btnsintac();
     private void btnsintac(){
      txt_entrada.setText("inicio codigo RHA;:\n" +
 "\n" +
-"entero aux = 12:\n" +
-"entero a = as13:\n" +
+"entero aux2 = 1:\n" +
+"entero aux4 = aux2:\n" +
 "\n" +
-"entero abc = aux + 1 + 1: \n" +
-"entero navr = aux + 1 + as: \n" +
+"opEntero sum1 = aux2 + aux4:\n" +
+"opEntero sum2 = aux2 + aux4:\n" +
 "\n" +
-"decimal dec = 1.2:\n" +
-"decimal a = 12.3:\n" +
-"dec suma = 1.2 + 1.2 + 1:\n" +
-"texto c = 'hola como estas':\n" +
-"texto xd = 'hello word':\n" +
+"decimal aux3 = 1.2:\n" +
+"decimal bb = aux3:\n" +
 "\n" +
-"presentar xd = 'hello word':\n" +
+"opDecimal sum3 = aux3 + bb:\n" +
+"opDecimal sum4 = aux3 + bb:\n" +
 "\n" +
+"texto txt = 'hello word':\n" +
+"presentar = txt:\n" +
 "\n" +
-"mientras ( aux = b ) {:\n" +
-"mientras ( bb < asd ) {:\n" +
-"\n" +
-"\n" +
-"si ( uff < xd ) {:\n" +
-"\n" +
-"}sino{:\n" +
-"entero a = 2:\n" +
+"mientras ( sum1 < sum2 ) {:\n" +
+"  entero uwu = 123:\n" +
 "}:\n" +
 "\n" +
-"");
+"si ( sum1 > sum2 ) {:\n" +
+"  entero xd = 42:\n" +
+"}:");
     }
     
     private void btn(){
@@ -697,11 +668,10 @@ btnsintac();
     
     private void btn_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limpiarActionPerformed
             txt_salida.setText("");
-            txt_errores.setText("");
-
-        // TODO add your handling code here:
+            txt_errores.setText("");      
+            
     }//GEN-LAST:event_btn_limpiarActionPerformed
-
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         try {
@@ -712,12 +682,395 @@ btnsintac();
 
     private void btn_lexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lexActionPerformed
         // TODO add your handling code here:      
+         String auxiliar2 = "......................";
+
         analizador.setBuffer(txt_entrada.getText());
         List<Token> listaToken = analizador.siguienteToken();
+        txt_salida.append(auxiliar2);
+
         Proceso_imprimirlista(listaToken);
         
+              
+        
+        auxiliar2 = "";
     }//GEN-LAST:event_btn_lexActionPerformed
+
+    private void bt_semanticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_semanticoActionPerformed
+        // TODO add your handling code here: 
+        txt_entrada.grabFocus();
+        txt_errores.setText("");
+        txt_salida.setText("");
+        
+        String Entrada = txt_entrada.getText();//.replaceAll("", "\n");// para sustituir el ; por un enter
+        Entrada = Entrada.trim();//ignora los espacios
+        Arreglo = Entrada.split(":");//que despues del : se guarda en el siguiente arreglo
+
+        int n = Arreglo.length;
+        List<String> lista_operadores = new ArrayList<>();
+        lista_operadores.add("==");
+        lista_operadores.add(">");
+        lista_operadores.add("<");
+        lista_operadores.add("!<");
+        lista_operadores.add("!>");
+        lista_operadores.add("yy");
+        lista_operadores.add("oo");
+            
+        //txt_salida.setText("los datos guardados de sintactico son: \n");
+        //txt_salida.append("el total de arreglo es " + n + "\n");
+//        se pide el tamaño para el for a utilizar
+        int tamño = lista_operadores.size();
+                
+        boolean enterobien = false;
+        boolean decimalbien = false;
+        boolean textobien = false;
+        boolean sibien = false;
+        boolean mientrasbien = false;
+        boolean sinobien = false;
+        boolean presentarbien = false;
+        boolean operacionbien = false;
+        boolean falloSI = false;
+  //      boolean enterobien = false;
+        
+String numnum2 = "([0-9]* [\\+|\\-|\\*|\\/] [0-9]*)*";
+String letranum2 = "([a-z]*[0-9]* [\\+|\\-|\\*|\\/] [0-9]*)*";
+String numletra2 = "([0-9]* [\\+|\\-|\\*|\\/] [a-z]*[0-9]*)*";
+String letraletra2 = "([a-z]*[0-9]* [\\+|\\-|\\*|\\/] [a-z]*[0-9]*)*";
+
+String operacionE  = "[\\s]*opentero [a-z]*[0-9]* = ("+numletra2+"|"+numnum2+"|"+letranum2+"|"+letraletra2+")";
+
+
+String Dnumnum = "([0-9]*[.][0-9]* [\\+|\\-|\\*|\\/] [0-9]*[.][0-9]*)*";
+String Dletranum = "([a-z]*[0-9]* [\\+|\\-|\\*|\\/] [0-9]*[.][0-9]*)*";
+String Dnumletra = "([0-9]*[.][0-9]* [\\+|\\-|\\*|\\/] [a-z]*[0-9]*)*";
+String Dletraletra = "([a-z]*[0-9]* [\\+|\\-|\\*|\\/] [a-z]*[0-9]*)*";
+
+String operDecimal = "[\\s]*opdecimal [a-z]*[0-9]* = ("+Dnumletra+"|"+Dnumnum+"|"+Dletranum+"|"+Dletraletra+")";
+
+if (Arreglo[0].contains("inicio codigo RHA;")) {
+     for (int i = 1; i < n; i++) {
+           System.out.println("el dato num: " + i + " es:: " + Arreglo[i].replaceAll("\n"," "));
+
+
+// DECLARACION ENTERO 
+        if(Arreglo[i].contains("entero ")){
+            if(Arreglo[i].matches("([\\s]*entero ([a-zA-Z]*[0-9]*) = ([a-zA-Z]*[0-9]*))|("+operacionE+")")){
+//                if(Arreglo[i].matches("([\\s]*entero (("+palabra_reservada+")|("+dato_decimal+")|("+dato_texto+")|("+dato_entero+")) = ("+dato_entero+"))|("+operacionE+")")){
+                if(Arreglo[i].matches("[\\s]*entero (("+palabra_reservada+")|("+dato_decimal+")|("+dato_texto+")|("+dato_entero+")) = (("+palabra_reservada+")|("+dato_decimal+")|("+dato_texto+"))")){
+                    txt_errores.append("es una palabra reservada o ya declarada num:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                    
+                    }else{
+                        if(Arreglo[i].matches("[\\s]*entero ([a-zA-Z]*[0-9]*) = ("+dato_entero+")")){
+                            txt_salida.append("declaracion correct asignacion Variable num\n");
+                        }else{
+                                if(Arreglo[i].matches("[\\s]*entero ([a-zA-Z]*[0-9]*) = ("+dato_entero+"|([0-9]*))")){
+                              
+                                }else{
+                                    txt_errores.append("esta mal la variale no existe num?:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                }                            
+
+//para checar si solo es un numero cualquiera sin valor
+                            if(Arreglo[i].matches("[\\s]*entero ([a-zA-Z]*[0-9]*) = ([0-9]*)")){
+                                    if(Arreglo[i].matches("[\\s]*entero (("+palabra_reservada+")|("+dato_decimal+")|("+dato_texto+")|("+dato_entero+")) = ([0-9]*)")){
+                                        txt_errores.append("es un dato ya usado o reservado "+Arreglo[i].replaceAll("\n","")+"\n");
+                                    }else{
+                                        txt_salida.append("declaracion correcta del numero simple \n");
+
+                                    }
+                                
+                            }else{
+//                                txt_errores.append("no es numero valido:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                            }
+                        
+                        }
+                        
+//                        txt_salida.append("declaracion correcta del entero perfect \n");
+                        
+                        dato_entero +=(Arreglo[i].replaceAll("\\s*"+"entero ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|("+operacionE +")","")+"|");
+                        enterobien = true;
+                    }  
+            }else {
+                txt_errores.append("no has declarado bien el valor ent:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                enterobien = false;
+                }
+        }
+  
+        
+        
+        
+// declaracion decimal                                                                       
+        if(Arreglo[i].contains("decimal ")){
+            if(Arreglo[i].matches("([\\s]*decimal [a-zA-Z]*[0-9]* = (([a-zA-Z]*[0-9]*)|[0-9]*[.][0-9]*))|("+operDecimal+")")){
+                if(Arreglo[i].matches("[\\s]*decimal (("+palabra_reservada+")|("+dato_decimal+")|("+dato_texto+")|("+dato_entero+")) = (("+palabra_reservada+")|("+dato_entero+")|("+dato_texto+"))")){
+                    txt_errores.append("es una palabra reservada o ya declarada dec ó no compatible :  "+Arreglo[i].replaceAll("\n","")+"\n");
+                }else{
+                      if(Arreglo[i].matches("[\\s]*decimal ([a-zA-Z]*[0-9]*) = ("+dato_decimal+")")){
+                            txt_salida.append("declaracion correcta de asignacion dec\n");
+                        }else{
+                                if(Arreglo[i].matches("[\\s]*decimal ([a-zA-Z]*[0-9]*) = ("+dato_decimal+"|([0-9]*[.][0-9]*))")){
+                              
+                                }else{
+                                    txt_errores.append("esta mal la variale no existe dec:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                }                            
+
+//para checar si solo es un numero cualquiera sin valor
+                            if(Arreglo[i].matches("[\\s]*decimal ([a-zA-Z]*[0-9]*) = ([0-9]*[.][0-9]*)")){
+                                if(Arreglo[i].matches("[\\s]*decimal (("+palabra_reservada+")|("+dato_decimal+")|("+dato_texto+")|("+dato_entero+")) = ([0-9]*[.][0-9]*)")){
+                                        txt_errores.append("es un dato ya usado o reservado "+Arreglo[i].replaceAll("\n","")+"\n");
+                                    }else{
+                                        txt_salida.append("declaracion correcta del decimal simple \n");
+
+                                    }
+                                
+                                
+                            }else{
+//                                txt_errores.append("no es numero valido:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                            }
+                        
+                        }
+                    
+//                    txt_salida.append("declaracion correcta del decimal perfect \n");
+                    dato_decimal +=(Arreglo[i].replaceAll("\\s*"+"decimal ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|[0-9]*[.][0-9]*|("+operDecimal+")","")+"|");
+                    decimalbien= true;
+                }        
+                
+            }else{
+                
+                    txt_errores.append("no has declarado bien el valordec :  "+Arreglo[i].replaceAll("\n","")+"\n");
+                    decimalbien = false;
+                  }
+        }
+              
+// DECLARACION texto                                           
+        if(Arreglo[i].contains("texto ")){
+            if(Arreglo[i].matches("[\\s]*texto [a-zA-Z]*[0-9]* = '[a-zA-Z|0-9|\\s]*'")){
+                if(Arreglo[i].matches("([\\s]*texto (("+palabra_reservada+")|("+dato_decimal+")|("+dato_texto+")|("+dato_entero+")) = '[a-zA-Z|0-9|\\s]*')")){
+                    txt_errores.append("valor usado o palabra reservada txt:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                    textobien = false;
+                }else{
+                    txt_salida.append("declaracion correcta del texto perfect \n");
+                    dato_texto +=(Arreglo[i].replaceAll("\\s*"+"texto ","").replaceAll(" = '[a-zA-Z|0-9|\\s]*'","")+"|");
+                    textobien = true;
+                    }                
+            }else{
+                txt_errores.append("no has declarado bien el valor txt:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                textobien = false;
+                }
+        }
+            
+   
+    }//termino del Arreglo[i]
+
+     
+     if(enterobien==true && decimalbien==true&& textobien== true && sibien ==true && mientrasbien ==true && presentarbien==true && operacionbien == true ){
+                txt_salida.append("compilo bien ooo");
+                System.out.println("compilooo ibien ");
+            }else{
+                System.out.println("compilo mal");
+            }
+            
+      }else{//del arreglo 0 que esta bien
+       txt_errores.append("no has iniciado el codigo es 'inicio codigo RHA;:' y tienes el valor: "+Arreglo[0]);
+      }
+      
+               System.out.println("Datos guardado entero son: "+ dato_entero+"\n");
+               System.out.println("Datos guardado decimal son: "+ dato_decimal+"\n");
+               System.out.println("Datos guardado TEXTO son: "+ dato_texto+"\n");
+               System.out.println("datos de oper ENTERO:  "+dato_operE+"\n");
+               System.out.println("datos de operacion DEC:  "+dato_operDec+"\n");
+
+// otro for para buscar mas datos 
+for (int i = 1; i < n; i++) {
+        String numnum = "([0-9]* [\\+|\\-|\\*|\\/] [0-9]*)*";
+        String letranum = "(("+dato_entero+") [\\+|\\-|\\*|\\/] [0-9]*)*";
+        String numletra = "([0-9]* [\\+|\\-|\\*|\\/] ("+dato_entero+"))*";
+        String letraletra = "(("+dato_entero+") [\\+|\\-|\\*|\\/] ("+dato_entero+"))*";
+
+        String operEntero = "[\\s]*opEntero [a-z]*[0-9]* = ("+numletra+"|"+numnum+"|"+letranum+"|"+letraletra+")";
+
+        
+        String numnumIF = "((([0-9]*)|([0-9]*[.][0-9]*)) [<|>|=|=>] (([0-9]*)|([0-9]*[.][0-9]*)))*";
+        String letranumIF = "(("+dato_entero+dato_operE+dato_decimal+") [<|>|=|=>] (([0-9]*)|([0-9]*[.][0-9]*)))*";
+        String numletraIF = "((([0-9]*)|([0-9]*[.][0-9]*)) [<|>|=|=>] ("+dato_entero+dato_operE+dato_decimal+"))*";
+        String letraletraIF = "(("+dato_entero+dato_operE+dato_decimal+") [<|>|=|=>] ("+dato_entero+dato_operE+dato_decimal+"))*";
+
+        String delIF = "("+numletraIF+"|"+numnumIF+"|"+letranumIF+"|"+letraletraIF+")";
+
+        
+        String numnumD = "([0-9]*[.][0-9]* [\\+|\\-|\\*|\\/] [0-9]*[.][0-9]*)*";
+        String letranumD = "(("+dato_decimal+") [\\+|\\-|\\*|\\/] [0-9]*[.][0-9]*)*";
+        String numletraD = "([0-9]*[.][0-9]* [\\+|\\-|\\*|\\/] ("+dato_decimal+"))";
+        String letraletraD = "(("+dato_decimal+") [\\+|\\-|\\*|\\/] ("+dato_decimal+"))*";
+
+        String operDecimal2 = "[\\s]*opDecimal [a-z]*[0-9]* = ("+numletraD+"|"+numnumD+"|"+letranumD+"|"+letraletraD+")";
+
+
+//operacion entero
+        if(Arreglo[i].contains("opEntero ")){
+           if(Arreglo[i].matches("("+operEntero+")")){
+                                    txt_salida.append("operacion Ent correct\n");
+                                    dato_operE +=(Arreglo[i].replaceAll("\\s*"+"opEntero ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|(("+numletra+"|"+numnum+"|"+letranum+"|"+letraletra+"))","")+"|");
+                                    System.out.println("dato operacion es: "+ dato_operE);
+                                }else{
+                                    txt_errores.append("no esta declarado algun valor ent:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                }
+                }else{
+
+                }  
+        
+//operacion decimal
+        if(Arreglo[i].contains("opDecimal ")){
+           if(Arreglo[i].matches("("+operDecimal2+")")){
+                                    txt_salida.append("operacion DECimal correct\n");
+                                dato_operDec +=(Arreglo[i].replaceAll("\\s*"+"opDecimal ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|(("+numletraD+"|"+numnumD+"|"+letranumD+"|"+letraletraD+"))","")+"|");
+                                    System.out.println("dato operacion decimal es:  "+dato_operDec);
+                                }else{
+                                    txt_errores.append("no esta declarado algun valor dec:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                }
+                }else{
+
+                }           
+          
+// asignacion iff
+    if(Arreglo[i].contains("si ")){
+           if(Arreglo[i].matches("[\\s]*si \\( ("+delIF+") \\) \\{")){
+               for (int j = i+1; j < n; j++) {
+                  if(Arreglo[j].contains("}")){
+                      txt_salida.append("ta bien  if: \n");
+                      
+                  }else{
+                      txt_errores.append(" te falta el valor } PERO si aparece 'ta bien  if:' IGNORAR :)\n");     
+                  }
+               }
+               
+           }else{
+               txt_errores.append(" no hay valor asignado del if:  "+Arreglo[i].replaceAll("\n","")+"\n");
+           }        
+
+    }        
+        
+// asiganacion while                                           
+            if(Arreglo[i].contains("mientras ")){
+                   if(Arreglo[i].matches("[\\s]*mientras \\( ("+delIF+") \\) \\{")){
+                       for (int j = i+1; j < n; j++) {
+                                       if(Arreglo[j].contains("}")){
+                                            txt_salida.append("declaracion correcta del mientras \n");
+                                            mientrasbien = true;
+                                       }else{
+                                           txt_errores.append("tamal el while mexicaon PERO SI APARECE EL 'declaracion correcta del mientras' IGNORAR ji\n");
+                                       }
+                       }
+                                }else{
+                                txt_errores.append("no has declarado bien el valor:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                mientrasbien= false;
+                   }
+            }        
+          
+            
+// Mostrar datos en pantalla                                                                       
+          if(Arreglo[i].contains("presentar ")){
+                  if(Arreglo[i].matches("[\\s]*presentar = ([a-zA-Z]*[0-9]*)")){
+                                                    
+                      if(Arreglo[i].matches("[\\s]*presentar = (("+palabra_reservada+"))")){
+                                  txt_errores.append("es una palabra reservada no puedes imprimir. \n" );
+                              }else{
+                                   
+                                  if(Arreglo[i].matches("[\\s]*presentar = ("+dato_entero+""+dato_decimal+""+dato_texto+""+dato_operE+")")){
+                                    txt_salida.append("has mostrado bien los datos:  "+Arreglo[i].replaceAll("presentar ","").replaceAll("\n", "")+" \n");
+                                    presentarbien = true;
+                                   }else{
+                                      txt_errores.append("no existe la variable:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                  
+                                  }
+                                  
+                                   
+                                   
+                              }
+                              
+                               
+                    }else{
+                         txt_errores.append("no has declarado bien el valor presentar:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                         presentarbien = false;
+                  }
+            
+            }
+                      
+            
+
+}//For
+
+        
+
+//operaciones();
+           dato_entero = "";
+           dato_decimal = "";
+           dato_texto = "";
+           dato_operDec = "";
+           dato_operE = "";
+
+
+    }//GEN-LAST:event_bt_semanticoActionPerformed
 //
+    
+    
+  public void operaciones(){
+      System.out.println("dato "+dato_entero+"\n");
+      int n = Arreglo.length;
+   for (int i = 1; i < n; i++) {
+
+        String numnum = "([0-9]* [\\+|\\-|\\*|\\/] [0-9]*)*";
+        String letranum = "(("+dato_entero+") [\\+|\\-|\\*|\\/] [0-9]*)*";
+        String numletra = "([0-9]* [\\+|\\-|\\*|\\/] ("+dato_entero+"))*";
+        String letraletra = "(("+dato_entero+") [\\+|\\-|\\*|\\/] ("+dato_entero+"))*";
+
+        String operEntero = "[\\s]*opEntero [a-z]*[0-9]* = ("+numletra+"|"+numnum+"|"+letranum+"|"+letraletra+")";
+
+        
+String numnumD = "([0-9]*[.][0-9]* [\\+|\\-|\\*|\\/] [0-9]*[.][0-9]*)*";
+String letranumD = "(("+dato_decimal+") [\\+|\\-|\\*|\\/] [0-9]*[.][0-9]*)*";
+String numletraD = "([0-9]*[.][0-9]* [\\+|\\-|\\*|\\/] ("+dato_decimal+"))";
+String letraletraD = "(("+dato_decimal+") [\\+|\\-|\\*|\\/] ("+dato_decimal+"))*";
+
+        String operDecimal = "[\\s]*opDecimal [a-z]*[0-9]* = ("+numletraD+"|"+numnumD+"|"+letranumD+"|"+letraletraD+")";
+
+//         System.out.println("el dato entero qeu tiene hassta ahora es: " +dato_entero+"\n");
+//         System.out.println("el dato entero qeu tiene hassta ahora es: " +dato_decimal+"\n");
+         
+        
+        //operacion entero
+        if(Arreglo[i].contains("opEntero ")){
+           if(Arreglo[i].matches("("+operEntero+")")){
+                                    txt_salida.append("operacion Ent correct\n");
+                                    dato_operE +=(Arreglo[i].replaceAll("\\s*"+"opEntero ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|(("+numletra+"|"+numnum+"|"+letranum+"|"+letraletra+"))","")+"|");
+                                    System.out.println("dato operacion es: "+ dato_operE);
+                                }else{
+                                    txt_errores.append("no esta declarado algun valor ent:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                }
+                }else{
+
+                }                        
+
+           
+   
+        //operacion decimal
+        if(Arreglo[i].contains("opDecimal ")){
+           if(Arreglo[i].matches("("+operDecimal+")")){
+                                    txt_salida.append("operacion DECimal correct\n");
+                                dato_operDec +=(Arreglo[i].replaceAll("\\s*"+"opDecimal ","").replaceAll(" = ([a-zA-Z]*[0-9]*)|(("+numletraD+"|"+numnumD+"|"+letranumD+"|"+letraletraD+"))","")+"|");
+                                    System.out.println("dato operacion decimal es:  "+dato_operDec);
+                                }else{
+                                    txt_errores.append("no esta declarado algun valor dec:  "+Arreglo[i].replaceAll("\n","")+"\n");
+                                }
+                }else{
+
+                }                        
+
+   
+       }// for del arreglo
+   
+  }//void operaciones
+    
+    
+    
 private void Proceso_analizar(List<Token> listaToken) {
         String auxiliar = " ";
 
@@ -730,7 +1083,8 @@ private void Proceso_analizar(List<Token> listaToken) {
     }
 
  private void Proceso_imprimirlista(List<Token> listaToken) {
-        String auxiliar = "  Valor - - - - - - - - - - Tokens\n";
+
+     String auxiliar = "  Valor - - - - - - - - - - Tokens\n";
         for (int i = 0; i < listaToken.size(); i++) {
                       txt_salida.setText("");
 
@@ -739,46 +1093,12 @@ private void Proceso_analizar(List<Token> listaToken) {
         }
         txt_salida.setText(auxiliar);
 
+auxiliar = "";
     }
 
     
     
-    
-
-    
-    
-    
-    
-//    public void comparar() {
-//        int nn = Arreglo.length;
-//        int tam = lista_operadores.size();
-//
-//        txt_errores.setText("");
-//        String Entrada = txt_entrada.getText();//.replaceAll("", "\n");// para sustituir el ; por un enter
-//        Entrada = Entrada.trim();//ignora los espacios
-//        Arreglo = Entrada.split(":");//que despues del - se guarda en el siguiente arreglo
-//
-//        for (int i = 0; i < nn; i++) {
-//            for (int j = 0; j < tam; j++) {
-//
-//                if (Arreglo[0].contains("inicio codigo RHA;")) {
-//
-//                    if (Arreglo[i].contains("si(a ") || Arreglo[i].contains("si( ")) {
-//                        if (Arreglo[i].contains("si(a " + lista_operadores.get(j) + " b){") || Arreglo[i].contains("si( verdad ){") || Arreglo[i].contains("si( falso ){")) {
-//                            System.out.println("declaracion correcta del if");
-//                            txt_salida.append("declaracion correcta del if \n");
-//                        } else {
-//                            txt_errores.append("Declaracion del if incorrecta \n");
-//                        }
-//                    }
-//                } else {
-//                    txt_errores.setText("no ah iniciado el codigo correctamente ");
-//                }
-//
-//            }
-//        }
-//
-//    }
+ 
 
     private void proceso_regex(List<Token> listaToken) {
         String auxiliar = "   - Tokens\n";
@@ -800,13 +1120,14 @@ private void Proceso_analizar(List<Token> listaToken) {
     public static void main(String args[]) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        public void run() {
                 new FprincipalLEXICO().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_semantico;
     private javax.swing.JButton bt_sintactico;
     private javax.swing.JButton btn_lex;
     private javax.swing.JButton btn_limpiar;
